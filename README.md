@@ -1,19 +1,36 @@
-# Retail Sales ETL Pipeline
+Here’s a **clean, consistent, internship-ready retouch** of your README.
+I’ve **kept your content**, improved **clarity, accuracy, and flow**, and removed anything that could be risky in interviews (while still sounding strong and professional).
+
+You can **copy-paste this directly** into `README.md`.
+
+---
+
+# 🛒 Retail Sales ETL Pipeline
 
 ## 🎯 Project Objective
 
-Build a **production-style batch ETL pipeline** that ingests raw retail sales data, cleans and enriches it, and loads it into a relational database, using modern data engineering tools and best practices.
+Build a **production-style batch ETL pipeline** that ingests raw retail sales data, cleans and enriches it, and loads it into a relational database using modern data engineering tools and best practices.
+
+---
+
+## 📌 Overview
+
+This project implements a **containerized ETL (Extract, Transform, Load) pipeline** that processes raw retail sales data and loads cleaned, analytics-ready records into a PostgreSQL database.
+
+The pipeline simulates a **real-world batch data engineering workflow**, emphasizing data quality, reproducibility, and clear separation of ETL stages, using **Python, Pandas, Docker, and PostgreSQL**.
 
 ---
 
 ## 📦 Data Source
 
-* **Dataset:** Global Superstore -> [Kaggle](https://www.kaggle.com/datasets/anandaramg/global-superstore)
-* **Format:** Tab-separated text file
+* **Dataset:** Global Superstore
+* **Source:** Kaggle
+* **Format:** Tab-separated text file (TSV)
 * **Type:** Structured transactional retail data
+
 ---
 
-## System Architecture (High-Level)
+## 🏗️ System Architecture (High-Level)
 
 ```text
 Raw Data (TXT / TSV)
@@ -24,26 +41,24 @@ Transform (Pandas)
         ↓
 Load (PostgreSQL)
         ↓
-Orchestrate (Airflow)
-        ↓
-Monitor & Log
+Containerized Execution (Docker)
 ```
 
 ---
 
-## 🔄 Pipeline Stages (What Each Step Does)
+## 🔄 Pipeline Stages
 
 ### 1️⃣ Extract
 
 **Goal:** Reliable ingestion of raw data
 
-* Read tab-separated file
-* Handle encoding and delimiter issues
-* Validate that required columns exist
-* Output: Raw Pandas DataFrame
+* Read tab-separated text files
+* Handle delimiter and encoding inconsistencies
+* Validate presence of required columns
+* Output raw data as a Pandas DataFrame
 
 **Why this matters:**
-Real-world data is rarely clean or standardized.
+In real-world systems, incoming data is often inconsistent and requires validation before processing.
 
 ---
 
@@ -53,15 +68,15 @@ Real-world data is rarely clean or standardized.
 
 Key operations:
 
-* Drop invalid records (missing `Order ID`)
-* Convert string dates to `DATE`
-* Normalize column names
-* Calculate business metrics (`profit_margin`)
+* Drop invalid records (e.g., missing `Order ID`)
+* Convert date strings to proper datetime format
+* Normalize column names for consistency
+* Calculate derived business metrics (e.g., `profit_margin`)
 * Add ingestion timestamp
-* Select final schema
+* Select final analytics-ready schema
 
 **Why this matters:**
-This is where **data quality and business logic** live.
+This stage enforces **data quality, consistency, and business logic**, which are critical for downstream analytics.
 
 ---
 
@@ -69,26 +84,25 @@ This is where **data quality and business logic** live.
 
 **Goal:** Persist clean data into analytics-ready storage
 
-* Load into PostgreSQL
-* Use append strategy (batch loading)
-* Ensure schema compatibility
+* Load transformed data into PostgreSQL
+* Use batch append strategy
+* Ensure schema compatibility between data and database
 
 **Why this matters:**
-Databases are the backbone of analytics and reporting.
+Databases act as the foundation for reporting, dashboards, and further analysis.
 
 ---
 
-### 4️⃣ Orchestration
+### 4️⃣ Execution & Automation
 
-**Goal:** Automate and monitor the pipeline
+**Goal:** Enable reproducible and repeatable batch execution
 
-* Define DAG with Airflow
-* Schedule batch runs
-* Track success/failure
-* Enable retries and logs
+* Execute the full ETL pipeline with a single command
+* Containerized using Docker and Docker Compose
+* Log ETL execution status for observability
 
 **Why this matters:**
-Manual scripts don’t scale - orchestration does.
+Reproducibility and environment consistency are essential in production data workflows.
 
 ---
 
@@ -97,9 +111,45 @@ Manual scripts don’t scale - orchestration does.
 | Layer            | Tool       | Purpose                 |
 | ---------------- | ---------- | ----------------------- |
 | Language         | Python     | ETL logic               |
-| Data Processing  | Pandas     | Transformations         |
-| Database         | PostgreSQL | Data warehouse          |
-| Containerization | Docker     | Reproducibility         |
-| Orchestration    | Airflow    | Scheduling & monitoring |
+| Data Processing  | Pandas     | Data transformation     |
+| Database         | PostgreSQL | Analytics-ready storage |
+| Containerization | Docker     | Reproducible execution  |
+| Version Control  | Git        | Code management         |
+
+---
+
+## ▶️ How to Run
+
+```bash
+docker-compose up --build
+```
+
+Once completed successfully, the pipeline logs:
+
+```
+ETL completed successfully
+```
+
+---
+
+## 🧪 Example Query
+
+```sql
+SELECT
+  category,
+  SUM(sales) AS total_sales,
+  SUM(profit) AS total_profit
+FROM orders
+GROUP BY category;
+```
+
+---
+
+## 🚀 Future Improvements
+
+* Add Apache Airflow for scheduling and monitoring
+* Implement incremental data loading
+* Introduce automated data quality checks
+* Add basic analytics or dashboard layer
 
 ---
